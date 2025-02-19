@@ -1,0 +1,29 @@
+openapi: 3.0.0
+info:
+  title: Poll API
+  description: API to serve the Poll UI
+  version: 0.0.1
+
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+
+components:
+  parameters:
+    authToken:
+      in: header
+      name: token
+      required: true
+      schema:
+        type: string
+      description: Authentication token
+
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: Application is healthy
+        '401':
+          description: Authentication failed
