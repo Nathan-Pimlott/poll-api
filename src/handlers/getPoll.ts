@@ -1,30 +1,17 @@
-import { query } from '../utils/db';
+import { getPollById } from '../services/poll';
+import { getPollOptionsByPollId } from '../services/pollOption';
+import { getPollVotesByPollId } from '../services/pollVotes';
 import { formatPoll } from '../utils/format';
-import { IPoll, IPollOption } from '../utils/types';
 
 export async function getPollHandler(req: any, res: any) {
   try {
     const { pollId } = req.params;
 
-    const pollQueryResponse: IPoll[] = await query(`
-      select * from poll where id = "${pollId}";
-    `);
+    const poll = await getPollById(pollId);
+    const pollOptions = await getPollOptionsByPollId(pollId);
+    const pollVotes = await getPollVotesByPollId(pollId);
 
-    if (!pollQueryResponse) {
-      throw Error('Unable to get polls.');
-    }
-
-    const poll = pollQueryResponse[0];
-
-    const optionQueryResponse: IPollOption[] = await query(`
-      select * from poll_option where pollId = "${pollId}"
-    `);
-
-    if (!optionQueryResponse) {
-      throw Error('Unable to get options for poll.');
-    }
-
-    const formattedPoll = formatPoll(poll, optionQueryResponse);
+    const formattedPoll = formatPoll(poll, pollOptions, pollVotes);
 
     return res.status(200).send(formattedPoll);
   } catch (error) {

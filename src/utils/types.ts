@@ -1,14 +1,3 @@
-export interface IUnformattedPolls {
-  [key: string]: {
-    id: string;
-    title: string;
-    status: string;
-    createdDate: string;
-    optionId: string;
-    optionTitle: string;
-  }[];
-}
-
 export interface IPoll {
   id: string;
   title: string;
@@ -17,8 +6,17 @@ export interface IPoll {
   options?: IPollOption[];
 }
 
+export type IPollToCreate = Omit<IPoll, 'id'>;
+
 export interface IPollOption {
   id: string;
   title: string;
   pollId: string;
+}
+
+export interface IPollVote {
+  id: string;
+  createdDate: string;
+  pollId: string;
+  optionId: string;
 }

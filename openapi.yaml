@@ -45,6 +45,18 @@ components:
       required:
         - id
         - createdDate
+    VoteToCreate:
+      type: object
+      properties:
+        pollId:
+          type: string
+          format: uuid
+        optionId:
+          type: string
+          format: uuid
+      required:
+        - pollId
+        - optionId
     PollToCreate:
       type: object
       properties:
@@ -157,9 +169,15 @@ paths:
         '401':
           description: Unauthorised
 
-  /poll/{pollId}/vote:
+  /vote:
     post:
       summary: Add a vote to a poll
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VoteToCreate'
       responses:
         '201':
           description: Vote was added successfully

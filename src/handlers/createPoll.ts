@@ -1,10 +1,12 @@
+import { createPoll } from '../services/poll';
+
 export async function createPollHandler(req: any, res: any) {
   try {
     const poll = req.body;
 
-    // Add logic to create the poll.
+    await createPoll(poll);
 
-    return res.status(201).send({});
+    return res.status(201).send();
   } catch (error) {
     console.log('Error creating poll.');
     console.debug({ error });

@@ -13,6 +13,6 @@ export function routes(app: Express) {
   app.get('/polls', getPollsHandler);
   app.get('/poll/:pollId', getPollHandler);
   app.get('/poll/:pollId/votes', getPollVotesHandler);
-  app.post('/poll/:pollId/vote', createPollVoteHandler);
+  app.post('/vote', createPollVoteHandler);
   app.post('/poll', createPollHandler);
 }

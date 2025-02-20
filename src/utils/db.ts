@@ -12,6 +12,15 @@ export const connect = async () => {
   return connection;
 };
 
+export async function testDbConnection() {
+  try {
+    await connect();
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
 export async function query(query: string) {
   try {
     const connection = await connect();

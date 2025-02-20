@@ -1,32 +1,18 @@
-import _ from 'lodash';
-
-import { query } from '../utils/db';
+import { getPolls } from '../services/poll';
+import { getPollOptions } from '../services/pollOption';
 import { formatPoll } from '../utils/format';
-import { IPoll, IPollOption } from '../utils/types';
 
 export async function getPollsHandler(req: any, res: any) {
   try {
-    const pollQueryResponse: IPoll[] = await query(`
-      select * from poll
-    `);
+    const polls = await getPolls();
 
-    if (!pollQueryResponse) {
-      throw Error('Unable to get polls.');
-    }
+    const pollOptions = await getPollOptions(polls);
 
-    const pollIds = pollQueryResponse.map((poll) => `"${poll.id}"`);
-    const optionQueryResponse: IPollOption[] = await query(`
-      select * from poll_option where pollId in (${pollIds.join(',')})
-    `);
+    const formattedPolls = polls.map((poll) => formatPoll(poll, pollOptions));
 
-    if (!optionQueryResponse) {
-      throw Error('Unable to get options for poll.');
-    }
-
-    const formattedPolls = pollQueryResponse.map((poll) =>
-      formatPoll(poll, optionQueryResponse)
-    );
-
+    // The polls in this result will all show 0 votes but it's not used
+    // on the front end so can update later if needed.
+    // Done to reduce number of db queries.
     return res.status(200).send(formattedPolls);
   } catch (error) {
     console.log('Error getting polls.');

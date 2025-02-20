@@ -1,10 +1,12 @@
+import { getPollVotesByPollId } from '../services/pollVotes';
+
 export async function getPollVotesHandler(req: any, res: any) {
   try {
     const { pollId } = req.params;
 
-    // Add logic to get all votes for a poll.
+    const pollVotes = await getPollVotesByPollId(pollId);
 
-    return res.status(200).send([]);
+    return res.status(200).send(pollVotes);
   } catch (error) {
     console.log('Error getting votes for poll.');
     console.debug({ error });
