@@ -1,4 +1,4 @@
-export async function createPollHandler(req: any, res: any) {
+export async function createPollVoteHandler(req: any, res: any) {
   try {
     const { pollId } = req.params;
 

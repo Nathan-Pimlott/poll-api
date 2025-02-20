@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import { query } from '../utils/db';
-import { formatPolls } from '../utils/format';
+import { formatPoll } from '../utils/format';
 import { IPoll, IPollOption } from '../utils/types';
 
 export async function getPollsHandler(req: any, res: any) {
@@ -23,7 +23,9 @@ export async function getPollsHandler(req: any, res: any) {
       throw Error('Unable to get options for poll.');
     }
 
-    const formattedPolls = formatPolls(pollQueryResponse, optionQueryResponse);
+    const formattedPolls = pollQueryResponse.map((poll) =>
+      formatPoll(poll, optionQueryResponse)
+    );
 
     return res.status(200).send(formattedPolls);
   } catch (error) {

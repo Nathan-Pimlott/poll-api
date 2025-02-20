@@ -5,6 +5,7 @@ import { getPollsHandler } from '../handlers/getPolls';
 import { getPollHandler } from '../handlers/getPoll';
 import { getPollVotesHandler } from '../handlers/getPollVotes';
 import { createPollHandler } from '../handlers/createPoll';
+import { createPollVoteHandler } from '../handlers/createPollVote';
 
 export function routes(app: Express) {
   middleware(app);
