@@ -18,6 +18,71 @@ components:
         type: string
       description: Authentication token
 
+  schemas:
+    PollOption:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        count:
+          type: number
+      required:
+        - id
+        - name
+        - count
+    Vote:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        createdDate:
+          type: string
+          format: date-time
+      required:
+        - id
+        - createdDate
+    VoteToCreate:
+      type: object
+      properties:
+        pollId:
+          type: string
+          format: uuid
+        optionId:
+          type: string
+          format: uuid
+      required:
+        - pollId
+        - optionId
+    PollToCreate:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: boolean
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/PollOption'
+      required:
+        - title
+        - status
+        - options
+    Poll:
+      allOf:
+        - $ref: '#/components/schemas/PollToCreate'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+          required:
+            - id
+
 paths:
   /health:
     get:
@@ -27,3 +92,96 @@ paths:
           description: Application is healthy
         '401':
           description: Authentication failed
+  /polls:
+    get:
+      summary: Get a list of all active polls
+      responses:
+        '200':
+          description: Successfully returned polls
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Poll'
+        '401':
+          description: Unauthorised
+  /poll/{pollId}:
+    get:
+      summary: Get a poll by the ID
+      parameters:
+        - name: pollId
+          in: path
+          description: ID of the poll to fetch
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successfully returned poll
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Poll'
+        '404':
+          description: Poll not found
+        '401':
+          description: Unauthorised
+  /poll/{pollId}/votes:
+    get:
+      summary: Get a list of votes for a given poll
+      parameters:
+        - name: pollId
+          in: path
+          description: ID of the poll to fetch votes for
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successfully returned list of votes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vote'
+        '404':
+          description: Poll not found
+        '401':
+          description: Unauthorised
+  /poll:
+    post:
+      summary: Create a new poll
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PollToCreate'
+      responses:
+        '201':
+          description: Poll was created successfully
+        '400':
+          description: Unable to create poll
+        '401':
+          description: Unauthorised
+
+  /vote:
+    post:
+      summary: Add a vote to a poll
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VoteToCreate'
+      responses:
+        '201':
+          description: Vote was added successfully
+        '400':
+          description: Unable to add vote
+        '401':
+          description: Unauthorised

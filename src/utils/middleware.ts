@@ -1,12 +1,10 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 export const authMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  console.log('In middleware');
-
   const { token } = req.headers;
 
   if (!token) {
