@@ -156,3 +156,14 @@ paths:
           description: Unable to create poll
         '401':
           description: Unauthorised
+
+  /poll/{pollId}/vote:
+    post:
+      summary: Add a vote to a poll
+      responses:
+        '201':
+          description: Vote was added successfully
+        '400':
+          description: Unable to add vote
+        '401':
+          description: Unauthorised
