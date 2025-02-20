@@ -6,13 +6,15 @@ export async function getPollHandler(req: any, res: any) {
   try {
     const { pollId } = req.params;
 
-    const pollQueryResponse: IPoll = await query(`
+    const pollQueryResponse: IPoll[] = await query(`
       select * from poll where id = "${pollId}";
     `);
 
     if (!pollQueryResponse) {
       throw Error('Unable to get polls.');
     }
+
+    const poll = pollQueryResponse[0];
 
     const optionQueryResponse: IPollOption[] = await query(`
       select * from poll_option where pollId = "${pollId}"
@@ -22,7 +24,7 @@ export async function getPollHandler(req: any, res: any) {
       throw Error('Unable to get options for poll.');
     }
 
-    const formattedPoll = formatPoll(pollQueryResponse, optionQueryResponse);
+    const formattedPoll = formatPoll(poll, optionQueryResponse);
 
     return res.status(200).send(formattedPoll);
   } catch (error) {

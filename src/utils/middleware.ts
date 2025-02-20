@@ -5,8 +5,6 @@ export const authMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log('In middleware');
-
   const { token } = req.headers;
 
   if (!token) {
