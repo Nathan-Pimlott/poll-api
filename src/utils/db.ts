@@ -26,6 +26,7 @@ export async function query(query: string) {
     const connection = await connect();
     const queryRes = await connection.query(query);
     if (queryRes.length > 0) {
+      await connection.end();
       return queryRes[0] as any;
     }
     await connection.end();

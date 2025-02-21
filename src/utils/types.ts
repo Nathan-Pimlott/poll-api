@@ -3,6 +3,7 @@ export interface IPoll {
   title: string;
   status: string;
   createdDate: string;
+  votes?: number;
   options?: IPollOption[];
 }
 
@@ -12,6 +13,7 @@ export interface IPollOption {
   id: string;
   title: string;
   pollId: string;
+  votes?: number;
 }
 
 export interface IPollVote {

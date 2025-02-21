@@ -1,23 +1,12 @@
 import _ from 'lodash';
 
-import { IPoll, IPollOption, IPollVote } from './types';
+import { IPoll, IPollOption } from './types';
 
-export function formatPoll(
-  poll: IPoll,
-  options: IPollOption[],
-  votes: IPollVote[] = []
-) {
+export function formatPoll(poll: IPoll, options: IPollOption[]) {
   return {
     ...poll,
-    votes: votes.length,
     options: options
       .filter((option) => option.pollId === poll.id)
-      .map((option) => ({
-        ...option,
-        votes: votes.reduce(
-          (count, vote) => (vote.optionId === option.id ? ++count : count),
-          0
-        ),
-      })),
+      .map(({ id, title, votes = 0 }) => ({ id, title, votes })),
   };
 }

@@ -3,7 +3,10 @@ import { IPollVote } from '../utils/types';
 
 export async function getPollVotesByPollId(pollId: string) {
   const votesQueryResponse: IPollVote[] = await query(`
-    select * from poll_vote where pollId = "${pollId}"
+    select pv.id, po.title, pv.createdDate 
+    from poll_vote pv
+    join poll_option po on po.id = pv.optionId
+    where pv.pollId = "${pollId}";
   `);
 
   if (!votesQueryResponse) {

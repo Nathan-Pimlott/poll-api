@@ -25,14 +25,14 @@ components:
         id:
           type: string
           format: uuid
-        name:
+        title:
           type: string
-        count:
+        votes:
           type: number
       required:
         - id
-        - name
-        - count
+        - title
+        - votes
     Vote:
       type: object
       properties:
@@ -80,8 +80,32 @@ components:
             id:
               type: string
               format: uuid
+            createdDate:
+              type: string
+            votes:
+              type: number
           required:
             - id
+            - createdDate
+            - votes
+    PollWithDetailedVotes:
+      allOf:
+        - $ref: '#/components/schemas/PollToCreate'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            createdDate:
+              type: string
+            votes:
+              type: array
+              items:
+                $ref: '#/components/schemas/Vote'
+          required:
+            - id
+            - createdDate
+            - votes
 
 paths:
   /health:
@@ -147,7 +171,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Vote'
+                  $ref: '#/components/schemas/PollWithDetailedVotes'
         '404':
           description: Poll not found
         '401':
