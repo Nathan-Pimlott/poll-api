@@ -7,8 +7,6 @@ export const validate = (schema: AnyZodObject) => {
       await schema.parseAsync(req);
       return next();
     } catch (error: any) {
-      console.log(error.errors);
-
       // Catch the Zod error or use a generic message
       const zodError =
         error.errors.length > 0
