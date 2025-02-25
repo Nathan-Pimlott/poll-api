@@ -45,3 +45,25 @@ DB_PASSWORD=test123
 ```
 
 3. Once you've done this, follow "Hitting local server" to get the server running, then you can GET localhost:3000/polls with a header `token` with any value and should get the mock data back.
+
+### Creating polls using API
+
+You can use the following cURL request format to create a new poll through the API.
+
+```
+curl --location 'http://localhost:3000/poll' \
+--header 'token: hello world' \
+--header 'Content-Type: application/json' \
+--data '{
+    "title": "Who will win the FA Cup?",
+    "options": [
+        "Manchester City",
+        "Arsenal",
+        "Chelsea",
+        "Manchester United",
+        "Tottenham",
+        "Nottingham Forest",
+        "Newcastle United"
+    ]
+}'
+```
