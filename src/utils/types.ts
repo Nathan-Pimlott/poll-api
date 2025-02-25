@@ -7,7 +7,10 @@ export interface IPoll {
   options?: IPollOption[];
 }
 
-export type IPollToCreate = Omit<IPoll, 'id'>;
+export type IPollToCreate = {
+  title: string;
+  options: string[];
+};
 
 export interface IPollOption {
   id: string;

@@ -1,6 +1,10 @@
 import { Express } from 'express';
+
 import { healthHandler } from '../handlers/health';
 import { middleware } from './middleware';
+import { validate } from '../utils/validate';
+import { createPollSchema } from '../utils/schema';
+
 import { getPollsHandler } from '../handlers/getPolls';
 import { getPollHandler } from '../handlers/getPoll';
 import { getPollVotesHandler } from '../handlers/getPollVotes';
@@ -14,5 +18,5 @@ export function routes(app: Express) {
   app.get('/poll/:pollId', getPollHandler);
   app.get('/poll/:pollId/votes', getPollVotesHandler);
   app.post('/vote', createPollVoteHandler);
-  app.post('/poll', createPollHandler);
+  app.post('/poll', validate(createPollSchema), createPollHandler);
 }

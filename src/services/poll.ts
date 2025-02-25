@@ -48,10 +48,10 @@ export async function createPoll(poll: IPollToCreate) {
     await Promise.all(
       poll.options?.map(async (option) => {
         await query(`
-        insert into poll_option(id, pollId, title) values(
-          uuid(), "${pollId}", "${option.title}"
-        );
-      `);
+          insert into poll_option(id, pollId, title) values(
+            uuid(), "${pollId}", "${option}"
+          );
+        `);
       })
     );
   }
